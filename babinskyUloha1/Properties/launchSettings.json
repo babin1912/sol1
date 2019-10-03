@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "babinskyUloha1": {
+      "commandName": "Project",
+      "commandLineArgs": "\"Toto je jednoducha prva veta. Toto je druha veta. Tretia veta. Poslednou bude veta, ktora je stvrta.\""
+    }
+  }
+}

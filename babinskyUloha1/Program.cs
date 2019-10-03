@@ -10,7 +10,7 @@ namespace babinskyUloha1
     {
         static void Main(string[] args)
         {
-            var input = Console.ReadLine().ToLower();
+            var input = args[0];
             Console.WriteLine(input);
             var separators = new string[] { ",", ".", "!", "\'", " ", "\'s" };
             var words = input.Split(separators, StringSplitOptions.RemoveEmptyEntries);
@@ -26,10 +26,47 @@ namespace babinskyUloha1
             Console.WriteLine("Number of consonants: " + (Regex.Replace(input, "[^A-Za-z0-9]", string.Empty).Length - GetNumberOfVowels(input)));
             
             Console.WriteLine("Number of words: " + words.Length);
-            Console.WriteLine("Number of unique words: " + WordsToDictionary(words));
-            Console.WriteLine("Number of sentences: " );
+            //Console.WriteLine("Number of unique words: " + WordsToDictionary(words));
+            Console.WriteLine("Number of sentences: " + NumberOfSentences(input));
             //Word word = new Word(input);
             //Console.WriteLine("Hello World!");
+        }
+
+        private static int NumberOfSentences(string input)
+        {
+            var sum = 0;
+            var chars = new List<string> {".", "!", "?"};
+                int calc = 0;
+            foreach (var ch in input)
+            {
+                if (chars.Contains(ch.ToString()) && calc == 0)
+                {
+                    calc=1;
+                    //Console.WriteLine("");
+                } else if (ch ==' ' && calc == 1  /*&& ch == 1*//*ch==2 && ch.ToString().Contains()*/)
+                {
+                    //ch.Equals((ch.ToString().Contains())&& calc == 1 
+                    calc = 2;
+
+                }
+                else if(char.IsUpper(ch) && calc==2)
+                {
+                    sum++;
+                    calc = 0;
+                }
+                else
+                {
+                    calc = 0;
+                }
+                
+            }
+
+            if (input.Length !=0)
+            {
+                sum++;
+            }
+            
+            return sum;
         }
 
         private static int GetNumberOfVowels(in string input)
@@ -48,7 +85,7 @@ namespace babinskyUloha1
                 try
                 {
                     
-                    dict.Add(word, 0);
+                    dict.Add(word, 1);
                 }
                 catch (ArgumentException)
                 {
@@ -56,7 +93,10 @@ namespace babinskyUloha1
                 }
             }
 
-            foreach (var word in dict)
+            var things = from character in dict
+                orderby character.Value descending
+                select character;
+            foreach (var word in things)
             {
                 Console.WriteLine (" "+word);
             }
