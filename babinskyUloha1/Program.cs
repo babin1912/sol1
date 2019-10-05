@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -11,9 +12,12 @@ namespace babinskyUloha1
         static void Main(string[] args)
         {
             var input = args[0];
+            
+
+            //Console.WriteLine(peter[0]);
             Console.WriteLine(input);
             var separators = new string[] { ",", ".", "!", "\'", " ", "\'s" };
-            var words = input.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            var words = input.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries);
             
             //int numOfCharsWithoutSpaces = Regex.Replace(input, " ", String.Empty).Length;
             //foreach (string word in input.Split(separators, StringSplitOptions.RemoveEmptyEntries)) Console.WriteLine(word);
@@ -27,10 +31,16 @@ namespace babinskyUloha1
             Console.WriteLine("Number of consonants: " + ( GetNumberOfConstants(Regex.Replace(input, "[^A-Za-z0-9]", string.Empty))));
             
             Console.WriteLine("Number of words: " + words.Length);
-            Console.WriteLine("Number of unique words: " + WordsToDictionary(words.ToList()).Count);
+            Console.WriteLine("Number of unique words: " + StuffToDictionary(words).Count);
             var numberOfSentences = NumberOfSentences(input);
             Console.WriteLine("Number of sentences: " + numberOfSentences);
             Console.WriteLine("Average sentence length (words): " +((double)words.Length/numberOfSentences) );
+
+            Console.WriteLine();
+            Console.WriteLine("Character frequencies:\n" + FrcajVystupSorted(StuffToDictionary(Regex.Replace(input.ToLower(), "[^A-Za-z0-9]",string.Empty))));
+            
+            Console.WriteLine();
+            Console.WriteLine("Word frequencies:\n" + FrcajVystupSorted(StuffToDictionary(words)));
             //Word word = new Word(input);
             //Console.WriteLine("Hello World!");
         }
@@ -137,33 +147,38 @@ namespace babinskyUloha1
         }
         
 
-        private static Dictionary<object, int> WordsToDictionary(in IEnumerable<object> input)
+        private static Dictionary<object, int> StuffToDictionary<T>(IEnumerable<T> input)
         {
             var dict = new Dictionary<object, int>();
-            foreach (var word in input)
+
+            foreach (var key in input)
             {
-                try
+                if (dict.ContainsKey(key))
                 {
-                    
-                    dict.Add(word, 1);
+                    dict[key]++;
                 }
-                catch (ArgumentException)
+                else
                 {
-                    dict[word]++;
+                    dict[key] = 1;
                 }
             }
 
-            var things = from character in dict
+
+            return dict;
+        }
+
+        public static string FrcajVystupSorted(Dictionary<object,int> input)
+        {
+            var things = from character in input
                 orderby character.Value descending
                 select character;
-
-
+            string output = "";
             foreach (var word in things)
             {
-                Console.WriteLine (" "+word);
+                output = string.Concat(output,word.Key,": ",word.Value,"x\n");
             }
-            
-            return dict;
+
+            return output;
         }
 
          
