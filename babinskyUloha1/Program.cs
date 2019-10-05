@@ -27,7 +27,7 @@ namespace babinskyUloha1
             Console.WriteLine("Number of consonants: " + ( GetNumberOfConstants(Regex.Replace(input, "[^A-Za-z0-9]", string.Empty))));
             
             Console.WriteLine("Number of words: " + words.Length);
-            Console.WriteLine("Number of unique words: " + WordsToDictionary(words).Count);
+            Console.WriteLine("Number of unique words: " + WordsToDictionary(words.ToList()).Count);
             var numberOfSentences = NumberOfSentences(input);
             Console.WriteLine("Number of sentences: " + numberOfSentences);
             Console.WriteLine("Average sentence length (words): " +((double)words.Length/numberOfSentences) );
@@ -137,9 +137,9 @@ namespace babinskyUloha1
         }
         
 
-        private static Dictionary<string, int> WordsToDictionary(in string[] input)
+        private static Dictionary<object, int> WordsToDictionary(in IEnumerable<object> input)
         {
-            var dict = new Dictionary<string, int>();
+            var dict = new Dictionary<object, int>();
             foreach (var word in input)
             {
                 try
@@ -158,14 +158,14 @@ namespace babinskyUloha1
                 select character;
 
 
-            /*foreach (var word in things)
+            foreach (var word in things)
             {
                 Console.WriteLine (" "+word);
-            }*/
+            }
             
             return dict;
         }
 
-        
+         
     }
 }
