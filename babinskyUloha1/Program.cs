@@ -11,9 +11,12 @@ namespace babinskyUloha1
     {
         static void Main(string[] args)
         {
-            var input = args[0];
             
-
+            if (args.Length==0) {
+                Console.WriteLine("<app_name> <input_text> [-wf | -cf]\nerror: not enough arguments");
+                return;
+            }
+            var input = args[0];
             //Console.WriteLine(peter[0]);
             Console.WriteLine(input);
             var separators = new string[] { ",", ".", "!", "\'", " ", "\'s" };
@@ -36,18 +39,27 @@ namespace babinskyUloha1
             Console.WriteLine("Number of sentences: " + numberOfSentences);
             Console.WriteLine("Average sentence length (words): " +((double)words.Length/numberOfSentences) );
 
-            Console.WriteLine();
-            Console.WriteLine("Character frequencies:\n" + FrcajVystupSorted(StuffToDictionary(Regex.Replace(input.ToLower(), "[^A-Za-z0-9]",string.Empty))));
-            
-            Console.WriteLine();
-            Console.WriteLine("Word frequencies:\n" + FrcajVystupSorted(StuffToDictionary(words)));
+            if (args[1].Equals("-cf")||args[2].Equals("-cf")) {
+                Console.WriteLine();
+                Console.WriteLine("Character frequencies:\n" + FrcajVystupSorted(StuffToDictionary(Regex.Replace(input.ToLower(), "[^A-Za-z0-9]", string.Empty))));
+
+            }
+            args[1] = "";
+            if (args[1].Equals("-wf") || args[2].Equals("-wf"))
+            {
+                Console.WriteLine();
+                Console.WriteLine("Word frequencies:\n" + FrcajVystupSorted(StuffToDictionary(words)));
+                //Word word = new Word(input);
+            }
+
             //Word word = new Word(input);
             //Console.WriteLine("Hello World!");
         }
 
         private static int GetNumberOfConstants(string input)
         {
-            bool reducer = false;
+            bool reducerCh = false;
+            bool reducerDz = false;
             int counter = 0;
             char[] vowels = { 'i', 'e', 'a', 'o', 'u', 'y' };
             foreach (var ch in input)
@@ -58,15 +70,27 @@ namespace babinskyUloha1
                     counter++;
                     if (!ch.Equals('c'))
                     {
-                        if (ch.Equals('h')&&reducer)
+                        if (ch.Equals('h')&&reducerCh)
                         {
                             counter--;
                         }
-                        reducer = false;
+                        reducerCh = false;
                     }
                     else
                     {
-                        reducer = true;
+                        reducerCh = true;
+                    }
+                    if (!ch.Equals('d'))
+                    {
+                        if (ch.Equals('z') && reducerDz)
+                        {
+                            counter--;
+                        }
+                        reducerDz = false;
+                    }
+                    else
+                    {
+                        reducerDz = true;
                     }
                 }
             }
