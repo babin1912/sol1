@@ -18,7 +18,7 @@ namespace babinskyUloha1
             }
             var input = args[0];
             //Console.WriteLine(peter[0]);
-            Console.WriteLine(input);
+            //Console.WriteLine(input);
             var separators = new string[] { ",", ".", "!", "\'", " ", "\'s" };
             var words = input.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries);
             
@@ -38,16 +38,16 @@ namespace babinskyUloha1
             var numberOfSentences = NumberOfSentences(input);
             Console.WriteLine("Number of sentences: " + numberOfSentences);
             Console.WriteLine("Average sentence length (words): " +((double)words.Length/numberOfSentences) );
+            Console.WriteLine();
 
             if (args[1].Equals("-cf")||args[2].Equals("-cf")) {
-                Console.WriteLine();
+                //Console.WriteLine();
                 Console.WriteLine("Character frequencies:\n" + FrcajVystupSorted(StuffToDictionary(Regex.Replace(input.ToLower(), "[^A-Za-z0-9]", string.Empty))));
 
             }
             args[1] = "";
             if (args[1].Equals("-wf") || args[2].Equals("-wf"))
             {
-                Console.WriteLine();
                 Console.WriteLine("Word frequencies:\n" + FrcajVystupSorted(StuffToDictionary(words)));
                 //Word word = new Word(input);
             }
